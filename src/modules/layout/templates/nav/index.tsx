@@ -5,6 +5,7 @@ import { StoreRegion } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CartButton from "@modules/layout/components/cart-button"
 import SideMenu from "@modules/layout/components/side-menu"
+import Image from "next/image"
 
 export default async function Nav() {
   const regions = await listRegions().then((regions: StoreRegion[]) => regions)
@@ -22,10 +23,16 @@ export default async function Nav() {
           <div className="flex items-center h-full">
             <LocalizedClientLink
               href="/"
-              className="txt-compact-xlarge-plus hover:text-ui-fg-base uppercase"
+              className="relative h-full w-auto flex items-center"
               data-testid="nav-store-link"
             >
-              Medusa Store
+              <Image
+                src="/logo/gold_trans.png"
+                alt="Limit Latex Logo"
+                width={200}
+                height={200}
+                className="object-contain max-h-full"
+              />
             </LocalizedClientLink>
           </div>
 

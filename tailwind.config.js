@@ -34,6 +34,10 @@ module.exports = {
           80: "#1F2937",
           90: "#111827",
         },
+        latexGold: "#d4af37",
+        latexBlack: "#0a0a0a",
+        latexRed: "#8a0f20",
+        latexGreen: "rgb(224,253,44)",
       },
       borderRadius: {
         none: "0px",

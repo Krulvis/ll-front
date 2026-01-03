@@ -1,36 +1,44 @@
-import { Github } from "@medusajs/icons"
-import { Button, Heading } from "@medusajs/ui"
+import { Button } from "@medusajs/ui"
+import HeroReveal from "@modules/home/components/hero/HeroReveal"
 
-const Hero = () => {
+export default function Hero() {
   return (
-    <div className="h-[75vh] w-full border-b border-ui-border-base relative bg-ui-bg-subtle">
-      <div className="absolute inset-0 z-10 flex flex-col justify-center items-center text-center small:p-32 gap-6">
-        <span>
-          <Heading
-            level="h1"
-            className="text-3xl leading-10 text-ui-fg-base font-normal"
-          >
-            Ecommerce Starter Template
-          </Heading>
-          <Heading
-            level="h2"
-            className="text-3xl leading-10 text-ui-fg-subtle font-normal"
-          >
-            Powered by Medusa and Next.js
-          </Heading>
-        </span>
-        <a
-          href="https://github.com/medusajs/nextjs-starter-medusa"
-          target="_blank"
-        >
-          <Button variant="secondary">
-            View on GitHub
-            <Github />
-          </Button>
-        </a>
-      </div>
-    </div>
+    <section className="relative h-[100vh] w-full overflow-hidden bg-black flex items-center justify-center">
+      {/* Background Video */}
+      <video
+        className="absolute inset-0 w-full h-full object-cover"
+        src="/videos/tunnel_walk_720.webm"
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
+
+      {/* Subtle gradient veil */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/90" />
+
+      {/* Main content */}
+      <HeroReveal
+        content={
+          <div className="text-center flex flex-col gap-6 px-6 max-w-3xl">
+            <h1 className="text-5xl md:text-7xl text-white font-light tracking-wide uppercase">
+              Limit Latex
+            </h1>
+
+            <p className="text-lg md:text-2xl text-white/70 font-light leading-relaxed">
+              Where Boundaries Are Transcended, Desires Will Be Embraced.
+            </p>
+            <a href="/store" className="mx-auto">
+              <Button
+                variant="secondary"
+                className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20"
+              >
+                Enter the Collection
+              </Button>
+            </a>
+          </div>
+        }
+      />
+    </section>
   )
 }
-
-export default Hero

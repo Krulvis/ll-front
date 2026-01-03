@@ -19,22 +19,32 @@ const StoreTemplate = ({
   const sort = sortBy || "created_at"
 
   return (
-    <div
-      className="flex flex-col small:flex-row small:items-start py-6 content-container"
-      data-testid="category-container"
-    >
-      <RefinementList sortBy={sort} />
-      <div className="w-full">
-        <div className="mb-8 text-2xl-semi">
-          <h1 data-testid="store-page-title">All products</h1>
+    <div className="w-full h-screen py-20">
+      <div
+        className="content-container flex flex-col small:flex-row small:items-start gap-12"
+        data-testid="category-container"
+      >
+        {/* Sidebar */}
+        <aside className="w-full small:w-64 backdrop-blur-sm p-6 rounded-xl border border-zinc-800 sticky top-24 h-fit">
+          <RefinementList sortBy={sort} />
+        </aside>
+
+        {/* Main Content */}
+        <div className="w-full space-y-10">
+          {/* Page title */}
+          <div className="mb-8 text-2xl-semi">
+            <h1 data-testid="store-page-title">All products</h1>
+          </div>
+
+          {/* Product Grid */}
+          <Suspense fallback={<SkeletonProductGrid />}>
+            <PaginatedProducts
+              sortBy={sort}
+              page={pageNumber}
+              countryCode={countryCode}
+            />
+          </Suspense>
         </div>
-        <Suspense fallback={<SkeletonProductGrid />}>
-          <PaginatedProducts
-            sortBy={sort}
-            page={pageNumber}
-            countryCode={countryCode}
-          />
-        </Suspense>
       </div>
     </div>
   )
