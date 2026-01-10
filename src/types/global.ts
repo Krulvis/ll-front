@@ -1,4 +1,4 @@
-import { StorePrice } from "@medusajs/types"
+import { StoreCustomer, StorePrice } from "@medusajs/types"
 
 export type FeaturedProduct = {
   id: string
@@ -21,4 +21,18 @@ export type StoreFreeShippingPrice = StorePrice & {
   target_reached: boolean
   target_remaining: number
   remaining_percentage: number
+}
+
+export type StoreCustomerWithMeasurements = StoreCustomer & {
+  measurements: StoreMeasurement[]
+}
+
+export type StoreMeasurement = {
+  id: string
+  created_at: string
+  updated_at: string
+  name: string
+  forehead: number
+  mouth: number
+  neck: number
 }

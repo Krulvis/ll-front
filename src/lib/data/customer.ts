@@ -14,9 +14,10 @@ import {
   removeCartId,
   setAuthToken,
 } from "./cookies"
+import { StoreCustomerWithMeasurements } from "../../types/global"
 
 export const retrieveCustomer =
-  async (): Promise<HttpTypes.StoreCustomer | null> => {
+  async (): Promise<StoreCustomerWithMeasurements | null> => {
     const authHeaders = await getAuthHeaders()
 
     if (!authHeaders) return null
@@ -30,15 +31,18 @@ export const retrieveCustomer =
     }
 
     return await sdk.client
-      .fetch<{ customer: HttpTypes.StoreCustomer }>(`/store/customers/me`, {
-        method: "GET",
-        query: {
-          fields: "*orders",
-        },
-        headers,
-        next,
-        cache: "force-cache",
-      })
+      .fetch<{ customer: StoreCustomerWithMeasurements }>(
+        `/store/customers/me`,
+        {
+          method: "GET",
+          query: {
+            fields: "*orders,*measurements",
+          },
+          headers,
+          next,
+          cache: "force-cache",
+        }
+      )
       .then(({ customer }) => customer)
       .catch(() => null)
   }
