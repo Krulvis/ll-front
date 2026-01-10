@@ -45,16 +45,15 @@ const AddMeasurement = ({
 
   return (
     <>
-      <button
-        className="border border-ui-border-base rounded-rounded p-5 min-h-[220px] h-full w-full flex flex-col justify-between"
+      <Button
         onClick={open}
-        data-testid="add-address-button"
+        data-testid="add-measurement-button"
       >
         <span className="text-base-semi">New Measurements</span>
         <Plus />
-      </button>
+      </Button>
 
-      <Modal isOpen={state} close={close} data-testid="add-address-modal">
+      <Modal isOpen={state} close={close} data-testid="add-measurement-modal">
         <Modal.Title>
           <Heading className="mb-2">Add measurements</Heading>
         </Modal.Title>

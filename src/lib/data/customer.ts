@@ -36,7 +36,7 @@ export const retrieveCustomer =
         {
           method: "GET",
           query: {
-            fields: "*orders,*measurements",
+            fields: "*orders",
           },
           headers,
           next,

@@ -1,9 +1,7 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
-import Divider from "@modules/common/components/divider"
-import TransferRequestForm from "@modules/account/components/transfer-request-form"
 import MeasurementOverview from "@modules/account/components/measurement-overview"
-import { retrieveCustomer } from "@lib/data/customer"
+import { listCustomerMeasurements } from "@lib/data/measurements"
 
 export const metadata: Metadata = {
   title: "Measurements",
@@ -11,9 +9,9 @@ export const metadata: Metadata = {
 }
 
 export default async function Measurements() {
-  const customer = await retrieveCustomer()
+  const measurements = await listCustomerMeasurements()
 
-  if (!customer) {
+  if (!measurements) {
     notFound()
   }
 
@@ -24,9 +22,7 @@ export default async function Measurements() {
         <p className="text-base-regular">View and manage your measurements.</p>
       </div>
       <div>
-        <MeasurementOverview customer={customer} />
-        <Divider className="my-16" />
-        <TransferRequestForm />
+        <MeasurementOverview measurements={measurements} />
       </div>
     </div>
   )

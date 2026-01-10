@@ -1,12 +1,24 @@
 import { Button } from "@medusajs/ui"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { StoreMeasurement } from "../../../../types/global"
+import { deleteCustomerMeasurement } from "@lib/data/measurements"
 
 type MeasurementCardProps = {
   measurement: StoreMeasurement
 }
 
 const MeasurementCard = ({ measurement }: MeasurementCardProps) => {
+  const handleDelete = async () => {
+    const result = await deleteCustomerMeasurement(measurement.id)
+    if (result.success) {
+      // Handle successful deletion, e.g. show a success message or refresh the list
+      console.log("Measurement deleted successfully")
+    } else {
+      // Handle deletion error
+      console.error("Failed to delete measurement:", result.error)
+    }
+  }
+
   return (
     <div className="bg-white flex flex-col" data-testid="measurement-card">
       <div className="uppercase text-large-semi mb-1">
@@ -19,7 +31,11 @@ const MeasurementCard = ({ measurement }: MeasurementCardProps) => {
       </div>
 
       <div className="flex justify-end">
-        <Button data-testid="measurement-details-link" variant="secondary">
+        <Button
+          data-testid="measurement-details-link"
+          variant="secondary"
+          onClick={handleDelete}
+        >
           Delete
         </Button>
         <LocalizedClientLink

@@ -1,30 +1,28 @@
 "use client"
 
-import { Button } from "@medusajs/ui"
-
 import MeasurementCard from "../measurement-card"
-import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import { StoreCustomerWithMeasurements } from "../../../../types/global"
+import { StoreMeasurement } from "../../../../types/global"
 import AddMeasurement from "@modules/account/components/measurement-card/add-measurement"
 
 const MeasurementOverview = ({
-  customer,
+  measurements,
 }: {
-  customer: StoreCustomerWithMeasurements
+  measurements: StoreMeasurement[]
 }) => {
-  const { measurements } = customer
   if (measurements?.length) {
     return (
       <div className="flex flex-col gap-y-8 w-full">
         <span>Measurements Overview: {measurements.length}</span>
-        {measurements.map((measurement) => (
-          <div
-            key={measurement.id}
-            className="border-b border-gray-200 pb-6 last:pb-0 last:border-none"
-          >
-            <MeasurementCard measurement={measurement} />
-          </div>
-        ))}
+        {measurements
+          .filter((m) => m != null)
+          .map((measurement) => (
+            <div
+              key={measurement.id}
+              className="border-b border-gray-200 pb-6 last:pb-0 last:border-none"
+            >
+              <MeasurementCard measurement={measurement} />
+            </div>
+          ))}
         <AddMeasurement measurements={measurements} />
       </div>
     )
@@ -40,11 +38,7 @@ const MeasurementOverview = ({
         You don&apos;t have any measurements yet, let us change that {":)"}
       </p>
       <div className="mt-4">
-        <LocalizedClientLink href="/" passHref>
-          <Button data-testid="create-measurement-button">
-            Create a measurement
-          </Button>
-        </LocalizedClientLink>
+        <AddMeasurement measurements={measurements} />
       </div>
     </div>
   )

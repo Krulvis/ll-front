@@ -2,8 +2,12 @@
 
 import { sdk } from "@lib/config"
 import medusaError from "@lib/util/medusa-error"
-import { getAuthHeaders, getCacheOptions } from "./cookies"
-import { StoreMeasurementResponse } from "../../types/responses"
+import { getAuthHeaders, getCacheOptions, getCacheTag } from "./cookies"
+import {
+  StoreMeasurementListResponse,
+  StoreMeasurementResponse,
+} from "../../types/responses"
+import { revalidateTag } from "next/cache"
 
 export const retrieveMeasurement = async (id: string) => {
   const headers = {
@@ -46,19 +50,16 @@ export const addCustomerMeasurement = async (
     ...(await getAuthHeaders()),
   }
 
-  const next = {
-    ...(await getCacheOptions("measurements")),
-  }
-
   return sdk.client
     .fetch<StoreMeasurementResponse>(`/store/measurement`, {
       method: "POST",
       body: measurement,
       headers,
-      next,
       cache: "force-cache",
     })
     .then(async ({ measurement }) => {
+      const customerCacheTag = await getCacheTag("customers")
+      revalidateTag(customerCacheTag)
       return { success: true, error: null }
     })
     .catch((err) => {
@@ -71,21 +72,37 @@ export const deleteCustomerMeasurement = async (id: string) => {
     ...(await getAuthHeaders()),
   }
 
-  const next = {
-    ...(await getCacheOptions("measurements")),
-  }
-
   return sdk.client
     .fetch<StoreMeasurementResponse>(`/store/measurement/${id}`, {
       method: "DELETE",
       headers,
-      next,
       cache: "force-cache",
     })
     .then(async () => {
+      const customerCacheTag = await getCacheTag("customers")
+      revalidateTag(customerCacheTag)
       return { success: true, error: null }
     })
     .catch((err) => {
       return { success: false, error: err.toString() }
+    })
+}
+
+export const listCustomerMeasurements = async () => {
+  const headers = {
+    ...(await getAuthHeaders()),
+  }
+
+  return sdk.client
+    .fetch<StoreMeasurementListResponse>(`/store/measurement`, {
+      method: "GET",
+      headers,
+      cache: "force-cache",
+    })
+    .then(({ measurements }) => {
+      return measurements
+    })
+    .catch((err) => {
+      medusaError(err)
     })
 }
