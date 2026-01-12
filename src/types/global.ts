@@ -29,6 +29,7 @@ export type StoreCustomerWithMeasurements = StoreCustomer & {
 
 export type StoreMeasurement = {
   id: string
+  customer_id: string
   created_at: string
   updated_at: string
   name: string

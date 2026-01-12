@@ -19,7 +19,7 @@ export const retrieveMeasurement = async (id: string) => {
   }
 
   return sdk.client
-    .fetch<StoreMeasurementResponse>(`/store/measurement/${id}`, {
+    .fetch<StoreMeasurementResponse>(`/store/measurements/${id}`, {
       method: "GET",
       query: {
         fields: "*",
@@ -51,14 +51,13 @@ export const addCustomerMeasurement = async (
   }
 
   return sdk.client
-    .fetch<StoreMeasurementResponse>(`/store/measurement`, {
+    .fetch<StoreMeasurementResponse>(`/store/measurements`, {
       method: "POST",
       body: measurement,
       headers,
-      cache: "force-cache",
     })
     .then(async ({ measurement }) => {
-      const customerCacheTag = await getCacheTag("customers")
+      const customerCacheTag = await getCacheTag("measurements")
       revalidateTag(customerCacheTag)
       return { success: true, error: null }
     })
@@ -73,13 +72,12 @@ export const deleteCustomerMeasurement = async (id: string) => {
   }
 
   return sdk.client
-    .fetch<StoreMeasurementResponse>(`/store/measurement/${id}`, {
+    .fetch<StoreMeasurementResponse>(`/store/measurements/${id}`, {
       method: "DELETE",
       headers,
-      cache: "force-cache",
     })
     .then(async () => {
-      const customerCacheTag = await getCacheTag("customers")
+      const customerCacheTag = await getCacheTag("measurements")
       revalidateTag(customerCacheTag)
       return { success: true, error: null }
     })
@@ -93,10 +91,15 @@ export const listCustomerMeasurements = async () => {
     ...(await getAuthHeaders()),
   }
 
+  const next = {
+    ...(await getCacheOptions("measurements")),
+  }
+
   return sdk.client
-    .fetch<StoreMeasurementListResponse>(`/store/measurement`, {
+    .fetch<StoreMeasurementListResponse>(`/store/measurements`, {
       method: "GET",
       headers,
+      next,
       cache: "force-cache",
     })
     .then(({ measurements }) => {

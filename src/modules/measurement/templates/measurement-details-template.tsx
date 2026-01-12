@@ -1,11 +1,11 @@
 "use client"
 
-import { XMark } from "@medusajs/icons"
+import { ArrowDownLeftMini } from "@medusajs/icons"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import Help from "@modules/order/components/help"
 import React from "react"
 import { StoreMeasurement } from "../../../types/global"
 import MeasurementDetails from "@modules/measurement/components/measurement-details"
+import MeasurementHelp from "@modules/measurement/components/help"
 
 type MeasurementDetailsTemplateProps = {
   measurement: StoreMeasurement
@@ -23,7 +23,7 @@ const MeasurementDetailsTemplate: React.FC<MeasurementDetailsTemplateProps> = ({
           className="flex gap-2 items-center text-ui-fg-subtle hover:text-ui-fg-base"
           data-testid="back-to-overview-button"
         >
-          <XMark /> Back to measurements overview
+          <ArrowDownLeftMini /> Back overview
         </LocalizedClientLink>
       </div>
       <div
@@ -31,7 +31,7 @@ const MeasurementDetailsTemplate: React.FC<MeasurementDetailsTemplateProps> = ({
         data-testid="order-details-container"
       >
         <MeasurementDetails measurement={measurement} showStatus />
-        <Help />
+        <MeasurementHelp />
       </div>
     </div>
   )

@@ -12,6 +12,7 @@ export default async function Measurements() {
   const measurements = await listCustomerMeasurements()
 
   if (!measurements) {
+    console.log(`no measurements, ${measurements}`)
     notFound()
   }
 

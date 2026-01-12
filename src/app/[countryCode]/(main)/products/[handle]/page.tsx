@@ -4,6 +4,7 @@ import { listProducts } from "@lib/data/products"
 import { getRegion, listRegions } from "@lib/data/regions"
 import ProductTemplate from "@modules/products/templates"
 import { HttpTypes } from "@medusajs/types"
+import { listCustomerMeasurements } from "@lib/data/measurements"
 
 type Props = {
   params: Promise<{ countryCode: string; handle: string }>
@@ -114,6 +115,7 @@ export default async function ProductPage(props: Props) {
     queryParams: { handle: params.handle },
   }).then(({ response }) => response.products[0])
 
+  const measurements = await listCustomerMeasurements()
   const images = getImagesForVariant(pricedProduct, selectedVariantId)
 
   if (!pricedProduct) {
@@ -126,6 +128,7 @@ export default async function ProductPage(props: Props) {
       region={region}
       countryCode={params.countryCode}
       images={images ?? []}
+      measurements={measurements}
     />
   )
 }

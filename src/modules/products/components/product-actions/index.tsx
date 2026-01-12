@@ -3,19 +3,25 @@
 import { addToCart } from "@lib/data/cart"
 import { useIntersection } from "@lib/hooks/use-in-view"
 import { HttpTypes } from "@medusajs/types"
-import { Button } from "@medusajs/ui"
+import { Button, Select } from "@medusajs/ui"
 import Divider from "@modules/common/components/divider"
 import OptionSelect from "@modules/products/components/product-actions/option-select"
 import { isEqual } from "lodash"
-import { useParams, usePathname, useSearchParams } from "next/navigation"
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation"
 import { useEffect, useMemo, useRef, useState } from "react"
 import ProductPrice from "../product-price"
 import MobileActions from "./mobile-actions"
-import { useRouter } from "next/navigation"
+import { StoreMeasurement } from "../../../../types/global"
 
 type ProductActionsProps = {
   product: HttpTypes.StoreProduct
   region: HttpTypes.StoreRegion
+  measurements?: StoreMeasurement[]
   disabled?: boolean
 }
 
@@ -31,6 +37,7 @@ const optionsAsKeymap = (
 export default function ProductActions({
   product,
   disabled,
+  measurements,
 }: ProductActionsProps) {
   const router = useRouter()
   const pathname = usePathname()
@@ -38,6 +45,9 @@ export default function ProductActions({
 
   const [options, setOptions] = useState<Record<string, string | undefined>>({})
   const [isAdding, setIsAdding] = useState(false)
+  const [measurement, setMeasurement] = useState<StoreMeasurement | undefined>(
+    undefined
+  )
   const countryCode = useParams().countryCode as string
 
   // If there is only 1 variant, preselect the options
@@ -130,6 +140,7 @@ export default function ProductActions({
       variantId: selectedVariant.id,
       quantity: 1,
       countryCode,
+      measurement,
     })
 
     setIsAdding(false)
@@ -161,6 +172,36 @@ export default function ProductActions({
         </div>
 
         <ProductPrice product={product} variant={selectedVariant} />
+
+        <div>
+          {(measurements?.length ?? 0) > 0 && (
+            <div className="flex flex-col gap-y-4">
+              <Select
+                value={measurement?.id ?? ""}
+                onValueChange={(value) =>
+                  setMeasurement(measurements!!.find((m) => m.id === value))
+                }
+              >
+                <Select.Trigger>
+                  <Select.Value placeholder="Select measurements to use"></Select.Value>
+                </Select.Trigger>
+                <Select.Content>
+                  {measurements?.map((measurement) => {
+                    return (
+                      <Select.Item key={measurement.id} value={measurement.id}>
+                        {measurement.name}
+                      </Select.Item>
+                    )
+                  })}
+                </Select.Content>
+              </Select>
+            </div>
+          )}
+          {!measurements ||
+            (measurements.length === 0 && (
+              <div className="flex flex-col gap-y-4">No measurements found</div>
+            ))}
+        </div>
 
         <Button
           onClick={handleAddToCart}

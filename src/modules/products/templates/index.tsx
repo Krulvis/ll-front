@@ -11,12 +11,14 @@ import { notFound } from "next/navigation"
 import { HttpTypes } from "@medusajs/types"
 
 import ProductActionsWrapper from "./product-actions-wrapper"
+import { StoreMeasurement } from "../../../types/global"
 
 type ProductTemplateProps = {
   product: HttpTypes.StoreProduct
   region: HttpTypes.StoreRegion
   countryCode: string
   images: HttpTypes.StoreProductImage[]
+  measurements?: StoreMeasurement[]
 }
 
 const ProductTemplate: React.FC<ProductTemplateProps> = ({
@@ -24,6 +26,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
   region,
   countryCode,
   images,
+  measurements,
 }) => {
   if (!product || !product.id) {
     return notFound()
@@ -49,6 +52,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
               <ProductActions
                 disabled={true}
                 product={product}
+                measurements={measurements}
                 region={region}
               />
             }

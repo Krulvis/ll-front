@@ -4,14 +4,18 @@ import ChevronDown from "@modules/common/icons/chevron-down"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { convertToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
-import { StoreCustomerWithMeasurements } from "../../../../types/global"
+import {
+  StoreCustomerWithMeasurements,
+  StoreMeasurement,
+} from "../../../../types/global"
 
 type OverviewProps = {
   customer: StoreCustomerWithMeasurements | null
   orders: HttpTypes.StoreOrder[] | null
+  measurements: StoreMeasurement[] | null
 }
 
-const Overview = ({ customer, orders }: OverviewProps) => {
+const Overview = ({ customer, orders, measurements }: OverviewProps) => {
   return (
     <div data-testid="overview-page-wrapper">
       <div className="hidden small:block">
@@ -70,9 +74,9 @@ const Overview = ({ customer, orders }: OverviewProps) => {
                   <span
                     className="text-3xl-semi leading-none"
                     data-testid="measurements-count"
-                    data-value={customer?.measurements?.length || 0}
+                    data-value={measurements?.length || 0}
                   >
-                    {customer?.measurements?.length || 0}
+                    {measurements?.length || 0}
                   </span>
                   <span className="uppercase text-base-regular text-ui-fg-subtle">
                     Saved
